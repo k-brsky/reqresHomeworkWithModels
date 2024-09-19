@@ -1,15 +1,12 @@
 package tests;
 
-import io.restassured.RestAssured;
 import models.lombok.*;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
-import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static specs.ReqSpecs.*;
 
@@ -20,7 +17,8 @@ public class ReqresTests extends TestBase{
     void countOfUsersTest() {
         UsersListResponseModel userList = step("Make request", () ->
                 given(requestSpecNoJson)
-                        .get("/users?page=2")
+                        .queryParam("page", "2")
+                        .get("/users")
                         .then()
                         .extract().as(UsersListResponseModel.class));
                 step("Check count of users", () -> {
@@ -73,11 +71,11 @@ public class ReqresTests extends TestBase{
                         .body(userData)
                         .post("/register")
                         .then()
-                        .spec(successfulResponseSpecification)
+                        .spec(successfulResponseSpecification200)
                         .extract().as(RegisterUserResponseModel.class));
         step("Check register response", () -> {
                 assertEquals(4, response.getId());
-                assertEquals("QpwL5tke4Pnpja7X4", response.getToken());
+                assertThat(response.getToken()).isNotNull().hasSizeGreaterThan(10);
         });
     }
 

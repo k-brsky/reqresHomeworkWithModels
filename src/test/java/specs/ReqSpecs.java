@@ -21,11 +21,10 @@ public class ReqSpecs {
 
     public static ResponseSpecification deleteResponseSpecification204 = new ResponseSpecBuilder()
             .expectStatusCode(204)
-            .log(STATUS)
+            .log(ALL)
             .build();
-    public static ResponseSpecification successfulResponseSpecification = new ResponseSpecBuilder()
+    public static ResponseSpecification successfulResponseSpecification200 = new ResponseSpecBuilder()
             .expectStatusCode(200)
-            .log(STATUS)
-            .log(BODY)
+            .log(ALL)
             .build();
 }
